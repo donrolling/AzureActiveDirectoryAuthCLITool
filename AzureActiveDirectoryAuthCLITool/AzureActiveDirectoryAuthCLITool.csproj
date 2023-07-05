@@ -12,7 +12,6 @@
 	<PropertyGroup>
 		<PackageId>AzureActiveDirectoryAuthCLITool</PackageId>
 		<Authors>Don Rolling</Authors>
-		<Company>Caliber FS</Company>
 	</PropertyGroup>
 
 	<ItemGroup>
