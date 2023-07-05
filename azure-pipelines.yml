@@ -1,0 +1,65 @@
+trigger:
+  branches:
+    include:
+    - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  assemblyVersion: '1.0.0'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'caliberfsnuget'
+
+- task: PowerShell@2
+  displayName: 'get version from branch name'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $branchSource = "$(Build.SourceBranch)"
+      $branchName = $branchSource -replace "refs/heads/", ""
+      if ($branchName -like "release/*") {
+        $versionInfo = $branchName -split "/"
+        $versionName = $versionInfo[1]
+        write-host "Version: $versionName"
+        write-Host "##vso[task.setvariable variable=assemblyVersion]$versionName"
+      } else {
+          write-host "not a release branch"
+          exit 1
+      }
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration Release -p:version=$(assemblyVersion)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    nobuild: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'assemblyVersion'
+
+- task: NuGetCommand@2
+  displayName: 'nuget push'
+  inputs:
+    command: 'push'
+    feedsToUse: 'select'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'caliberfsnuget'
+    versioningScheme: 'off'
+    allowPackageConflicts: true
