@@ -1,7 +1,6 @@
 ﻿using AzureActiveDirectoryAuthCLITool.Models;
 using AzureActiveDirectoryAuthCLITool.Services;
 using CommandLine;
-using Enterprise.Operations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

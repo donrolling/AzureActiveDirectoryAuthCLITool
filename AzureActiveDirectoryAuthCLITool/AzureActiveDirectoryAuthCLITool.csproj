@@ -7,15 +7,26 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>aadauth</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageId>AzureActiveDirectoryAuthCLITool</PackageId>
+		<Title>Azure Active Directory Auth CLI Tool</Title>
 		<Authors>Don Rolling</Authors>
+		<Owners>Don Rolling</Owners>
+		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/donrolling/AzureActiveDirectoryAuthCLITool</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/donrolling/AzureActiveDirectoryAuthCLITool</RepositoryUrl>
+		<RepositoryType>github</RepositoryType>
+		<RepositoryBranch>main</RepositoryBranch>
+		<Copyright>2022</Copyright>
+		<Language>en-US</Language>
+		<PackageTags>security;auth;microsoft</PackageTags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Enterprise.OperationResult" Version="1.1.1" />
 		<PackageReference Include="CommandLineParser" Version="2.9.1" />
 		<PackageReference Include="Microsoft.Identity.Web" Version="2.8.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
@@ -23,10 +34,15 @@
 		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <None Update="appSettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Include="..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\LICENSE" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appSettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>
